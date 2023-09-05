@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class MemberItemProcessor implements ItemProcessor<Member, Member> {
 
     @Override
-    public Member process(@Nonnull Member member) throws Exception {
+    public Member process(@Nonnull Member member) {
         return member;
     }
 }
