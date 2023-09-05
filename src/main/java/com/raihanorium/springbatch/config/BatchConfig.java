@@ -7,7 +7,6 @@ import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -18,7 +17,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 
 @Configuration
-@EnableBatchProcessing
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BatchConfig {
 
@@ -29,16 +27,16 @@ public class BatchConfig {
 
 
     @Bean
-    public Job memberJob(JobRepository jobRepository, Step sampleStep) {
+    public Job memberJob(JobRepository jobRepository, Step singleStep) {
         return new JobBuilder("memberJob", jobRepository)
-                .start(sampleStep)
+                .start(singleStep)
                 .build();
     }
 
 
     @Bean
     public Step memberStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("sampleStep", jobRepository)
+        return new StepBuilder("memberStep", jobRepository)
                 .<Member, Member>chunk(10, transactionManager)
                 .reader(memberReader)
                 .writer(memberWriter)
